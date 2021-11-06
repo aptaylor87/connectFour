@@ -54,23 +54,16 @@ function makeHtmlBoard() {
   }
 }
 
+
 /** findSpotForCol: given column x, return top empty y (null if filled) */
 
 function findSpotForCol(x) {
-  // TODO: write the real version of this, rather than always returning 0
-  if (board.every(function(row) {
-    return row[x] === undefined;
-  })) {
-    return (height - 1);
-  } else if (board.every(function(row) {
-    return row[x] !== undefined;
-  })) {
-    return null;
-  } else {
-    return board.findIndex(function(row) {
-      return row[x] !== undefined;
-    }) - 1
+  for (let y = height - 1; y >= 0; y--) {
+    if (!board[y][x]) {
+      return y;
+    }
   }
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -121,8 +114,7 @@ function handleClick(evt) {
     gameOver = true;
     return endGame("This game is a tie, try again!");
   }
-  // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  // switch current player
   currPlayer = (currPlayer !== 1) ? 1 : 2
   }
 }
@@ -148,7 +140,6 @@ function checkForWin() {
   }
 
   // TODO: read and understand this code. Add comments to help you.
-
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
@@ -162,7 +153,6 @@ function checkForWin() {
     }
   }
 }
-
 
 makeBoard();
 makeHtmlBoard();
